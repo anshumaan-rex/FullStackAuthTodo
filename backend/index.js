@@ -4,6 +4,7 @@ import cors from "cors"
 import connectDB from "./config/db.js"
 import authRouter from "./routes/authRoutes.js"
 import cookieParser from "cookie-parser"
+import todoRouter from "./routes/todoRoutes.js"
 
 dotenv.config({ quiet: true })
 
@@ -18,6 +19,7 @@ app.use(cors({
 }))
 
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/todo", todoRouter)
 
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀")
