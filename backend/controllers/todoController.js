@@ -66,7 +66,7 @@ export const getSpecificTodo = async (req, res) => {
   const filter = req.query?.filter;
   const status = req.query?.status;
 
-  if (!filter) {
+  if (filter === undefined || filter === null) {
     return res.status(400).json({
       success: false,
       message: "filter query is required",

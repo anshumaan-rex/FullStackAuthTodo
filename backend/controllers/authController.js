@@ -29,6 +29,7 @@ export const signup = async (req, res) => {
 
     if (userExists) {
       return res.status(400).json({
+        success: false,
         message: "user already exists with this email",
       });
     }
@@ -169,7 +170,7 @@ export const login = async (req, res) => {
 
     const { password: _, ...safeUser } = user.toObject();
 
-    return res.status(200).json({ success: true, safeUser });
+    return res.status(200).json({ success: true, message: "Logged in successfully", safeUser });
   } catch (err) {
     console.error("Login error", err);
     return res.status(500).json({
