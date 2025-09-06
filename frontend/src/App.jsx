@@ -5,13 +5,14 @@ import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import PasswordReset from "./pages/PasswordReset"
 import Verify from "./pages/Verify"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 export default function App() {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/login" element={<Login />} />
