@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import PasswordReset from "./pages/PasswordReset"
 import Verify from "./pages/Verify"
 import ProtectedRoute from "./components/ProtectedRoute"
+import EditTodo from "./pages/EditTodo"
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/verify" element={<Verify />} />
         <Route path="/login" element={<Login />} />
         <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="/edit/:id" element={<EditTodo />} />
       </Routes>
     </div>
   )

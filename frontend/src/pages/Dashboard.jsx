@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { TodoCard } from "../components/TodoCard"
+import CreateTodo from "./CreateTodo"
 
 export default function Dashboard() {
   const [todos, setTodos] = useState([])
@@ -8,6 +9,7 @@ export default function Dashboard() {
   const [todoStatus, setTodoStatus] = useState(null)
   const [searchFilter, setSearchFilter] = useState("")
   const [debouncedFilter, setDebouncedFilter] = useState("")
+  const [openCreateTodo, setOpenCreateTodo] = useState(false)
 
   useEffect(() => {
     if (!searchFilter) {
@@ -59,40 +61,21 @@ export default function Dashboard() {
     fetchTodos()
   }, [todoStatus, debouncedFilter])
 
-  // Add Todo
-  async function handleAddTodo(e) {
-    e.preventDefault()
-    if (!newTodo.trim()) return
-
-    try {
-      const res = await fetch("http://localhost:4000/api/v1/todo/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ title: newTodo })
-      })
-
-      const data = await res.json()
-      if (res.ok && data.success) {
-        setTodos((prev) => [data.todo, ...prev]) // add new todo at top
-        setNewTodo("")
-      }
-    } catch (err) {
-      console.log("Error adding todo", err)
-    }
-  }
-
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">Your Todos</h2>
-
+   <div
+  className={`max-w-3xl mx-auto p-6 ${openCreateTodo ? "bg-black" : ""}`}>
+      <div className="flex justify-between items-baseline text-center">
+        <h2 className={`text-2xl font-bold mb-4 inline-block ${openCreateTodo ? "text-white": ""}`}>Your Todos</h2>
+        <button onClick={()=> setOpenCreateTodo(state => !state)} className="text-white bg-blue-500 text-xl font-semibold px-3 py-1 rounded pb-2">Create <span className="text-2xl">+</span></button>
+      </div>
+      {openCreateTodo && <CreateTodo setTodos={setTodos}/>}
       <div className="flex items-center gap-2 mb-4">
         <input
           type="text"
           placeholder="Search todos"
           value={searchFilter}
           onChange={(e) => setSearchFilter(e.target.value)}
-          className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className={`flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 ${openCreateTodo ? "text-white placeholder-white" : ""}`}
         />
         <button
           onClick={() => setTodoStatus("completed")}
@@ -122,7 +105,7 @@ export default function Dashboard() {
       {loading ? (
         <p className="text-gray-500">Loading...</p>
       ) : todos.length > 0 ? (
-        <TodoCard todos={todos} />
+        <TodoCard todos={todos} setTodos={setTodos}/>
       ) : (
         <p className="text-gray-500">No todos found.</p>
       )}
