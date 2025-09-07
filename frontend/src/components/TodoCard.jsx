@@ -47,6 +47,15 @@ export const TodoCard = ({ todos, setTodos }) => {
             >
               Edit
             </Link>
+            <button onClick={async() => {
+              await fetch(`http://localhost:4000/api/v1/todo/delete/${todo._id}`, {
+                method:"DELETE",
+                credentials: "include"
+              })
+              setTodos(todos => todos.filter(t=> t._id !== todo._id))
+            }} className="text-white bg-red-500 px-3 py-2 rounded">
+              Delete
+            </button>
           </div>
         </div>
       ))}
